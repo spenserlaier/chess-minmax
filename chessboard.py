@@ -56,32 +56,50 @@ def detect_check(chessboard, king):
     king_color = king.color
     for row in chessboard:
         for piece in row:
-            if piece.available_moves.contains((king.x, king.y)) and piece.color != king_color:
-                # we may not need to check color, because the king shouldn't be in the same colored
-                # pieces available moves anyway
-                return True
+            #if piece.available_moves.contains((king.x, king.y)) and piece.color != king_color:
+            if piece is not None:
+                if (king.row, king.col) in piece.available_moves and piece.color != king_color:
+                    # we may not need to check color, because the king shouldn't be in the same colored
+                    # pieces available moves anyway
+                    return True
     return False
 
-def simulate_moves_and_detect_check(board, piece_row, piece_col):
+def prune_moves_for_checked_team(board, piece_row, piece_col, king):
     piece = board[piece_row][piece_col]
-    checkmate = True
-    for row, col in piece.available_moves:
+    for row, col in piece.available_moves.copy():
         piece.move_self(row, col)
-        if detect_check(piece.board) == False:
-            checkmate = False
+        if detect_check(piece.board, king) is True:
+            piece.available_moves.remove((row, col))
         piece.move_self(piece_row, piece_col) #move the piece back to its original state
-    return checkmate
 
 
 def detect_checkmate(chessboard, king):
     # traverse one layer of moves from the pieces with the same color of
     # the checked king. if we run check detection for each of these moves
     # and none of them returns a non-checked state, then we have checkmate
+    valid_moves_after_check = 0
     for row in chessboard:
         for piece in row:
-            if simulate_moves_and_detect_check(chessboard, piece) is False:
-                return False
-    return True
+            if piece is not None:
+                prune_moves_for_checked_team(chessboard, piece.row, piece.col, king)
+                valid_moves_after_check += len(piece.available_moves)
+    return True if valid_moves_after_check > 0 else False
+
+
+def get_kings(chessboard):
+    kings = []
+    for row in chessboard:
+        for piece in row:
+            if piece is not None:
+                if piece.symbol == '♚':
+                    kings.append(piece)
+    return kings
+
+
+
+
+
+
             
             
 

@@ -30,6 +30,7 @@ def minimax(board, curr_depth, max_depth, own_turn):
                     piece.move_self(r, c)
                     board_state_value = compute_value(piece.board)
                     move_value = minimax(piece.board, curr_depth+1, max_depth, own_turn=False)
+                    # TODO: we also need to run the update function and generate new available moves here
 
                     if own_turn is True:
                         if board_state_value + move_value > best_move_value:

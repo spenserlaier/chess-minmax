@@ -44,11 +44,12 @@ chessboard_pixels = chessboard.get_chessboard_pixel_coords(BOARD_STARTING_X,
 initialized_chessboard = chessboard.initialize_starting_board(chessboard_grid)
 selected_piece = None
 recompute_moves = True
+game_over = False
 
 
 current_team_color = "white"
 # Main game loop
-while True:
+while game_over is False:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -80,8 +81,6 @@ while True:
                     #print(selected_piece.available_moves, selected_piece.color, selected_piece.symbol)
             else:
                 selected_piece = None
-
-
     # Draw background
     screen.fill(colors.brown)
 
@@ -130,7 +129,22 @@ while True:
                 if piece is not None:
                     #this is printing pieces as expected
                     piece.compute_valid_moves()
+        kings = chessboard.get_kings(initialized_chessboard)
+        for king in kings:
+            if chessboard.detect_check(initialized_chessboard, king):
+                if chessboard.detect_checkmate(initialized_chessboard, king):
+                    game_over = True
+                    winner = "black" if king.color == "white" else "white"
+                    print(f"winner is {winner}")
         recompute_moves = False
+
+
+
+    
+
+
+
+
 
 
     
