@@ -1,7 +1,8 @@
-def test_generic_directions(piece, directions):
-    def generic_test(piece, row_diff, col_diff, moves):
+def test_generic_directions(piece, directions, num_iterations=None):
+    def generic_test(piece, row_diff, col_diff, moves, num_iterations=None):
         test_row = piece.row
         test_col = piece.col
+        curr_iterations = 0
         while (0 <= test_row < len(piece.board) 
                and 0 <= test_col < len(piece.board)):
             if piece.board[test_row][test_col] is None:
@@ -13,6 +14,9 @@ def test_generic_directions(piece, directions):
                 break
             test_row += row_diff
             test_col += col_diff
+            curr_iterations += 1
+            if num_iterations is not None and curr_iterations == num_iterations:
+                break
         return moves
     final_moves = set()
     if "up" in directions:
@@ -73,6 +77,7 @@ class Piece:
         self.board = board
         self.color = color
         self.available_moves = set()
+        self.moves_made = 0
 
     def compute_valid_moves(self):
         return True
@@ -82,6 +87,7 @@ class Piece:
         self.row = row
         self.col = col
         self.board[row][col] = self
+        self.moves_made += 1
 
 
 class Pawn(Piece):
@@ -89,9 +95,20 @@ class Pawn(Piece):
         super().__init__(x, y, board, color)
         self.symbol = u"♟︎"
 
-    def compute_valid_moves(self ):
-        return True
-
+    def compute_valid_moves(self):
+        row, col = self.row, self.col
+        if self.color == 'black':
+            # check that we can move down one row
+            if self.row + 1 < len(self.board) and self.board[row+1][col] is None:
+                self.available_moves.add((self.row+1, self.col))
+                if self.row+2 < len(self.board) and self.board[row+2][col] is None:
+                    self.available_moves.add((self.row+2, self.col))
+        elif self.color == 'white':
+            # check that we can move up one space
+            if self.row - 1 >= 0 and self.board[row-1][col] is None:
+                self.available_moves.add((self.row-1, self.col))
+                if self.row-2 >= 0 and self.board[row-2][col] is None:
+                    self.available_moves.add((self.row-2, self.col))
 
 class Rook(Piece):
     def __init__(self, x, y, board, color):
@@ -99,7 +116,7 @@ class Rook(Piece):
         self.symbol = u"♜"
 
     def compute_valid_moves(self):
-        return test_generic_directions(self, ["left", "right", "up", "down"])
+        self.available_moves =  test_generic_directions(self, ["left", "right", "up", "down"])
 
 class Knight(Piece):
     def __init__(self, x, y, board, color):
@@ -107,17 +124,11 @@ class Knight(Piece):
         self.symbol = u"♞"
 
     def compute_valid_moves(self ):
-        moves = set()
-        test_left = self.col
-        while test_left >= 0:
-            if self.board[self.row][test_left] is None:
-                moves.add((self.row, test_left))
-            elif self.board[self.row][test_left].color != self.color:
-                moves.add((self.row, test_left))
-                break
-            else:
-                break
-            test_left -=1
+
+
+
+
+
         return True
 
 
@@ -127,7 +138,7 @@ class Bishop(Piece):
         self.symbol = u"♝"
 
     def compute_valid_moves(self ):
-        return test_generic_directions(self, ["up-left","up-right", "down-left", "down-right"])
+        self.available_moves =  test_generic_directions(self, ["up-left","up-right", "down-left", "down-right"])
 
 class Queen(Piece):
     def __init__(self, x, y, board, color):
@@ -135,7 +146,7 @@ class Queen(Piece):
         self.symbol = u"♛"
 
     def compute_valid_moves(self ):
-        return test_generic_directions(self, ["up", "down", "left", "right",  "up-left","up-right", "down-left", "down-right"])
+        self.available_moves = test_generic_directions(self, ["up", "down", "left", "right",  "up-left","up-right", "down-left", "down-right"])
 
 
 class King(Piece):
@@ -145,7 +156,7 @@ class King(Piece):
         self.symbol = u"♚"
         #else:
             #self.symbol = u"♔"
-
     def compute_valid_moves(self ):
-        return True
+        self.available_moves = test_generic_directions(self, ["up","left","down","right","up-left","up-right","down-left","down-right" ]
+                                       ,num_iterations=1)
 
