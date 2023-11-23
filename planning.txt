@@ -1,0 +1,15 @@
+how should the available moves for different pieces be computed and represented?
+
+one idea is, each time a move is made, scan the board for the existence of check or checkmate
+    a checked state occurs when one piece's set of available (i.e. valid) moves contains the coordinates
+    of the opposing side's king
+
+    if we detect a check state, we also need to compute all possible theoretical moves
+    from the checked team to determine if any one of them can free the team from check
+        if a theoretical free state exists, then the team is in check but not checkmate, the game can continue
+        if no such state exists, then it's checkmate and the game is over
+if neither exists, then compute all valid moves for each piece in the current board configuration
+    if the user clicks on a piece, allow them to move that piece to the calculated valid coordinates
+        and proceed to the next turn
+    if they attempt to move to an invalid coordinate for that piece, reset the piece and do not continue
+        to the next turn
