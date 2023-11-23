@@ -124,13 +124,24 @@ class Knight(Piece):
         self.symbol = u"♞"
 
     def compute_valid_moves(self ):
+        steep_up_right = (self.row-2, self.col+1)
+        flat_up_right= (self.row-1, self.col+2)
 
+        steep_up_left = (self.row-2, self.col-1)
+        flat_up_left= (self.row-1, self.col-2)
 
+        steep_down_right = (self.row+2, self.col+1)
+        flat_down_right = (self.row-1, self.col+2)
 
-
-
-        return True
-
+        steep_down_left = (self.row+2, self.col-1)
+        flat_down_left = (self.row+1, self.col-2)
+        for row, col in [steep_up_right, flat_up_right, 
+                       steep_up_left, flat_up_left, 
+                       steep_down_right, flat_down_right,
+                       steep_down_left, flat_down_left]:
+            if 0 <= row < len(self.board) and 0 <= col < len(self.board):
+                if self.board[row][col] is None or self.board[row][col].color != self.color:
+                    self.available_moves.add((row, col))
 
 class Bishop(Piece):
     def __init__(self, x, y, board, color):
