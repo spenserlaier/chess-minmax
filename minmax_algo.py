@@ -7,7 +7,7 @@ def compute_value(board):
     total_white_value = 0
     total_black_value = 0
     for row in board:
-        for piece in board:
+        for piece in row:
             if piece is not None:
                 if piece.color == "black":
                     total_black_value += piece.value
@@ -26,17 +26,19 @@ def minimax(board, curr_depth, max_depth, own_turn):
     for r_idx, row in enumerate(board):
         for c_idx, piece in enumerate(row):
             if piece is not None and piece.color == curr_team:
-                for row, col in piece.available_moves:
-                    piece.move_self(row, col)
+                for r, c in piece.available_moves:
+                    piece.move_self(r, c)
+                    board_state_value = compute_value(piece.board)
                     move_value = minimax(piece.board, curr_depth+1, max_depth, own_turn=False)
+
                     if own_turn is True:
-                        if move_value > best_move_val:
+                        if board_state_value + move_value > best_move_value:
                             best_move_value = move_value
-                            best_move = ((r_idx, c_idx), (row, col))
+                            best_move = ((r_idx, c_idx), (r, c))
                     else:
-                        if move_value < best_move_val:
+                        if board_state_value + move_value < best_move_value:
                             best_move_value = move_value
-                            best_move = ((r_idx, c_idx), (row, col))
+                            best_move = ((r_idx, c_idx), (r, c))
                     piece.move_self(r_idx, c_idx) # undo the move
     if curr_depth == 0:
         return best_move
