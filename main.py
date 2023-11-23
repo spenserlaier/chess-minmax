@@ -71,6 +71,7 @@ while True:
                     selected_piece = None
                 elif piece is not None:
                     selected_piece = piece
+                    print(selected_piece.available_moves, selected_piece.color, selected_piece.symbol)
             else:
                 selected_piece = None
 
@@ -116,6 +117,8 @@ while True:
 
     # update the moves of all pieces
     # TODO: also perform check and checkmate detection here
+    # TODO: this currently runs every frame. perhaps a check to see that it's already been 
+    # initialized for this moveset can help with that
     for row_idx, row in enumerate(initialized_chessboard):
         for col_idx in range(len(row)):
             piece = initialized_chessboard[row_idx][col_idx]

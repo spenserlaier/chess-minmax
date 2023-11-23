@@ -79,18 +79,57 @@ class Pawn(Piece):
 
     def compute_valid_moves(self):
         row, col = self.row, self.col
+        self.available_moves = set()
         if self.color == 'black':
             # check that we can move down one row
-            if self.row + 1 < len(self.board) and self.board[row+1][col] is None:
-                self.available_moves.add((self.row+1, self.col))
-                if self.moves_made == 0 and self.row+2 < len(self.board) and self.board[row+2][col] is None:
-                    self.available_moves.add((self.row+2, self.col))
+            if self.row + 1 < len(self.board):
+                if self.board[row+1][col] is None:
+                    self.available_moves.add((self.row+1, self.col))
+                    if (
+                        self.moves_made == 0 
+                        and self.row+2 < len(self.board) 
+                        and self.board[row+2][col] is None
+                    ):
+                        self.available_moves.add((self.row+2, self.col))
+                if (
+                    self.col - 1 >= 0 
+                    and self.board[row+1][self.col-1] is not None 
+                    and self.board[self.row+1][self.col-1].color != self.color
+                ):
+                    
+                    self.available_moves.add((self.row+1, self.col-1))
+                if (
+                    self.col + 1 < len(self.board) 
+                    and self.board[row+1][self.col+1] is not None 
+                    and self.board[self.row+1][self.col+1].color != self.color
+                ):
+
+                    self.available_moves.add((self.row+1, self.col+1))
         elif self.color == 'white':
             # check that we can move up one space
-            if self.row - 1 >= 0 and self.board[row-1][col] is None:
-                self.available_moves.add((self.row-1, self.col))
-                if self.moves_made == 0 and self.row-2 >= 0 and self.board[row-2][col] is None:
-                    self.available_moves.add((self.row-2, self.col))
+            if self.row - 1 >= 0:
+                if self.board[row-1][col] is None:
+                    self.available_moves.add((self.row-1, self.col))
+                    if (
+                        self.moves_made == 0 
+                        and self.row-2 >= 0 
+                        and self.board[row-2][col] is None
+                    ):
+                        self.available_moves.add((self.row-2, self.col))
+                if (
+                    self.col - 1 >= 0 
+                    and self.board[row-1][self.col-1] is not None 
+                    and self.board[self.row-1][self.col-1].color != self.color
+                ):
+
+                    self.available_moves.add((self.row-1, self.col-1))
+                if (
+                    self.col + 1 < len(self.board) 
+                    and self.board[row-1][self.col+1] is not None 
+                    and self.board[self.row-1][self.col+1].color != self.color
+                ):
+
+                    self.available_moves.add((self.row-1, self.col+1))
 
 class Rook(Piece):
     def __init__(self, x, y, board, color):
@@ -113,7 +152,7 @@ class Knight(Piece):
         flat_up_left= (self.row-1, self.col-2)
 
         steep_down_right = (self.row+2, self.col+1)
-        flat_down_right = (self.row-1, self.col+2)
+        flat_down_right = (self.row+1, self.col+2)
 
         steep_down_left = (self.row+2, self.col-1)
         flat_down_left = (self.row+1, self.col-2)
