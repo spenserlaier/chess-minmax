@@ -18,12 +18,19 @@ BOARD_COLS = 8
 BOARD_STARTING_X = 20
 BOARD_STARTING_Y = 20
 
-FONT = pygame.font.Font("fonts/arial_unicode.ttf", SQUARE_SIZE-8)
+FONT = pygame.font.Font("fonts/arial_unicode.ttf", SQUARE_SIZE)
 
 
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Chess AI")
+
+
+def scale_symbol(symbol, color):
+    text_surface = FONT.render(symbol, True, color)
+    text_surface = pygame.transform.scale(text_surface, 
+                                          (SQUARE_SIZE, SQUARE_SIZE))
+    return text_surface
 
 # Set up colors
 
@@ -35,6 +42,7 @@ chessboard_pixels = chessboard.get_chessboard_pixel_coords(BOARD_STARTING_X,
                                                            chessboard_grid)
 
 initialized_chessboard = chessboard.initialize_starting_board(chessboard_grid)
+selected_piece = None
 # Main game loop
 while True:
     for event in pygame.event.get():
@@ -51,11 +59,33 @@ while True:
                                                                mouse_x,
                                                                mouse_y)
             print(grid_pos_clicked)
-            
+            #icon_rect.center = (cursor_x, cursor_y)
+            # Blit icon onto the screen at the updated position
+            #screen.blit(icon, icon_rect.topleft)
+            if grid_pos_clicked is not None:
+                row, col = grid_pos_clicked
+                piece = initialized_chessboard[row][col]
+                if piece is not None:
+                    selected_piece = piece
+                    #print(piece)
+                    #piece_symbol = piece.symbol
+                    #piece_color = colors.get_rgb_piece_color(piece)
+                    #scaled_symbol = scale_symbol(piece_symbol, piece_color)
+                    #text_rect = pygame.Rect(mouse_x, mouse_y, SQUARE_SIZE, SQUARE_SIZE)
+                    #screen.blit(scaled_symbol, text_rect)
+                    #pygame.display.flip()
+                else:
+                    selected_piece = None
+            else:
+                selected_piece = None
 
 
     # Draw background
     screen.fill(colors.brown)
+
+
+
+
     for r_idx, row in enumerate(initialized_chessboard):
         new_row = []
         for c_idx in range(len(row)):
@@ -70,8 +100,18 @@ while True:
                 #text_surface = FONT.render(curr_piece.symbol, True, colors.black)
                 text_surface = FONT.render(curr_piece.symbol, True, piece_color)
                 # Blit the text surface onto the screen at the specified rectangle
+                text_surface = pygame.transform.scale(text_surface, (SQUARE_SIZE, SQUARE_SIZE))
                 text_rect = pygame.Rect(coord_x, coord_y, SQUARE_SIZE, SQUARE_SIZE)
                 screen.blit(text_surface, text_rect)
+
+    if selected_piece is not None:
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        piece_symbol = piece.symbol
+        piece_color = colors.get_rgb_piece_color(piece)
+        scaled_symbol = scale_symbol(piece_symbol, piece_color)
+        text_rect = pygame.Rect(mouse_x, mouse_y, SQUARE_SIZE, SQUARE_SIZE)
+        screen.blit(scaled_symbol, text_rect)
+        pygame.display.flip()
 
     pygame.display.flip()
 

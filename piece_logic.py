@@ -1,3 +1,12 @@
+import colors
+
+
+def get_rgb_piece_color(piece):
+    if piece.color == "black":
+        return colors.black
+    return colors.white
+
+
 class Piece:
 
     def __init__(self, x, y, board, color):

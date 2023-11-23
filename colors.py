@@ -1,3 +1,6 @@
+import piece_logic
+
+
 white = (255, 255, 255)
 black = (0, 0, 0)
 brown = (128, 71, 59)
@@ -15,3 +18,10 @@ def get_color_at_coords(x, y):
         if y % 2 == 1:
             return light_gray
         return dark_gray
+
+
+def get_rgb_piece_color(piece):
+    if piece.color == "black":
+        return black
+    return white
+
