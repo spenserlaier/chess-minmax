@@ -20,45 +20,21 @@ def test_generic_directions(piece, directions, num_iterations=None):
         return moves
     final_moves = set()
     if "up" in directions:
-        final_moves = generic_test(piece, 
-                                   row_diff=-1, 
-                                   col_diff=0, 
-                                   moves=final_moves)
+        final_moves = generic_test(piece, row_diff=-1, col_diff=0, moves=final_moves)
     if "down" in directions:
-        final_moves = generic_test(piece, 
-                                   row_diff=+1, 
-                                   col_diff=0, 
-                                   moves=final_moves)
+        final_moves = generic_test(piece, row_diff=+1, col_diff=0, moves=final_moves)
     if "left" in directions:
-        final_moves = generic_test(piece, 
-                                   row_diff=0, 
-                                   col_diff=-1,
-                                   moves=final_moves)
+        final_moves = generic_test(piece, row_diff=0, col_diff=-1, moves=final_moves)
     if "right" in directions:
-        final_moves = generic_test(piece, 
-                                   row_diff=0, 
-                                   col_diff=1, 
-                                   moves=final_moves)
+        final_moves = generic_test(piece, row_diff=0, col_diff=1, moves=final_moves)
     if "up-right" in directions:
-        final_moves = generic_test(piece, 
-                                   row_diff=-1, 
-                                   col_diff=1, 
-                                   moves=final_moves)
+        final_moves = generic_test(piece, row_diff=-1, col_diff=1, moves=final_moves)
     if "down-right" in directions:
-        final_moves = generic_test(piece, 
-                                   row_diff=+1, 
-                                   col_diff=1, 
-                                   moves=final_moves)
+        final_moves = generic_test(piece, row_diff=1, col_diff=1, moves=final_moves)
     if "up-left" in directions:
-        final_moves = generic_test(piece, 
-                                   row_diff=-1, 
-                                   col_diff=-1, 
-                                   moves=final_moves)
+        final_moves = generic_test(piece, row_diff=-1, col_diff=-1, moves=final_moves)
     if "down-left" in directions:
-        final_moves = generic_test(piece, 
-                                   row_diff=+1, 
-                                   col_diff=-1, 
-                                   moves=final_moves)
+        final_moves = generic_test(piece, row_diff=+1, col_diff=-1, moves=final_moves)
     return final_moves
 
         
@@ -101,13 +77,13 @@ class Pawn(Piece):
             # check that we can move down one row
             if self.row + 1 < len(self.board) and self.board[row+1][col] is None:
                 self.available_moves.add((self.row+1, self.col))
-                if self.row+2 < len(self.board) and self.board[row+2][col] is None:
+                if self.moves_made == 0 and self.row+2 < len(self.board) and self.board[row+2][col] is None:
                     self.available_moves.add((self.row+2, self.col))
         elif self.color == 'white':
             # check that we can move up one space
             if self.row - 1 >= 0 and self.board[row-1][col] is None:
                 self.available_moves.add((self.row-1, self.col))
-                if self.row-2 >= 0 and self.board[row-2][col] is None:
+                if self.moves_made == 0 and self.row-2 >= 0 and self.board[row-2][col] is None:
                     self.available_moves.add((self.row-2, self.col))
 
 class Rook(Piece):

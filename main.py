@@ -66,7 +66,8 @@ while True:
                 row, col = grid_pos_clicked
                 piece = initialized_chessboard[row][col]
                 if selected_piece is not None:
-                    selected_piece.move_self(row, col)
+                    if (row, col) in selected_piece.available_moves:
+                        selected_piece.move_self(row, col)
                     selected_piece = None
                 elif piece is not None:
                     selected_piece = piece
@@ -99,9 +100,10 @@ while True:
                 screen.blit(text_surface, text_rect)
 
     if selected_piece is not None:
+        print(selected_piece.available_moves)
         mouse_x, mouse_y = pygame.mouse.get_pos()
         piece_symbol = selected_piece.symbol
-        piece_color = colors.get_rgb_piece_color(piece)
+        piece_color = colors.get_rgb_piece_color(selected_piece)
         scaled_symbol = scale_symbol(piece_symbol, piece_color)
         text_rect = pygame.Rect(mouse_x, mouse_y, SQUARE_SIZE, SQUARE_SIZE)
         screen.blit(scaled_symbol, text_rect)
@@ -111,4 +113,21 @@ while True:
 
     # Control frame rate (optional)
     pygame.time.Clock().tick(60)
+
+    # update the moves of all pieces
+    # TODO: also perform check and checkmate detection here
+    for row_idx, row in enumerate(initialized_chessboard):
+        for col_idx in range(len(row)):
+            piece = initialized_chessboard[row_idx][col_idx]
+            if piece is not None:
+                piece.compute_valid_moves()
+
+
+    
+    
+
+
+
+
+
 
