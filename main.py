@@ -35,10 +35,6 @@ chessboard_pixels = chessboard.get_chessboard_pixel_coords(BOARD_STARTING_X,
                                                            chessboard_grid)
 
 initialized_chessboard = chessboard.initialize_starting_board(chessboard_grid)
-
-
-
-
 # Main game loop
 while True:
     for event in pygame.event.get():
@@ -60,8 +56,8 @@ while True:
 
     # Draw background
     screen.fill(colors.brown)
-    for r_idx, row in enumerate(chessboard_grid):
-        #for c_idx, (coord_x, coord_y) in enumerate(row):
+    for r_idx, row in enumerate(initialized_chessboard):
+        new_row = []
         for c_idx in range(len(row)):
             coord_x, coord_y = chessboard_pixels[r_idx][c_idx]
             square_color = colors.get_color_at_coords(r_idx, c_idx)
@@ -76,7 +72,6 @@ while True:
                 # Blit the text surface onto the screen at the specified rectangle
                 text_rect = pygame.Rect(coord_x, coord_y, SQUARE_SIZE, SQUARE_SIZE)
                 screen.blit(text_surface, text_rect)
-
 
     pygame.display.flip()
 

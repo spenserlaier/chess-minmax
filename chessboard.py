@@ -25,16 +25,17 @@ def get_chessboard_pixel_coords(starting_x,
 def initialize_starting_board(chessboard):
     cnt = 0
     for r_idx, row in enumerate(chessboard):
+        new_row = []
         for c_idx in range(len(row)):
+            print(row)
             piece = None
-            (print(r_idx, c_idx))
             if r_idx == 1:  # black pawn
                 piece = piece_logic.Pawn(r_idx, c_idx, chessboard, "black")
                 cnt += 1
-            if r_idx == len(chessboard) - 2:  # white pawn
+            elif r_idx == len(chessboard) - 2:  # white pawn
                 piece = piece_logic.Pawn(r_idx, c_idx, chessboard, "white")
                 cnt += 1
-            if r_idx == 0 or r_idx == len(chessboard) - 1:
+            elif r_idx == 0 or r_idx == len(chessboard) - 1:
                 cnt += 1
                 color = "black" if r_idx == 0 else "white"
                 if c_idx == 0 or c_idx == len(row) - 1:  # rook
@@ -48,6 +49,7 @@ def initialize_starting_board(chessboard):
                 elif c_idx == 4:  # king
                     piece = piece_logic.King(r_idx, c_idx, chessboard, color)
             chessboard[r_idx][c_idx] = piece
+            new_row.append(piece)
+        chessboard[r_idx] = new_row
     print("count: ", cnt)
-
     return chessboard
