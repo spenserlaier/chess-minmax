@@ -43,6 +43,10 @@ chessboard_pixels = chessboard.get_chessboard_pixel_coords(BOARD_STARTING_X,
 
 initialized_chessboard = chessboard.initialize_starting_board(chessboard_grid)
 selected_piece = None
+recompute_moves = True
+
+
+current_team_color = "white"
 # Main game loop
 while True:
     for event in pygame.event.get():
@@ -68,10 +72,12 @@ while True:
                 if selected_piece is not None:
                     if (row, col) in selected_piece.available_moves:
                         selected_piece.move_self(row, col)
+                        recompute_moves = True
+                        current_team_color = "white" if current_team_color == "black" else "black"
                     selected_piece = None
-                elif piece is not None:
+                elif piece is not None and piece.color == current_team_color:
                     selected_piece = piece
-                    print(selected_piece.available_moves, selected_piece.color, selected_piece.symbol)
+                    #print(selected_piece.available_moves, selected_piece.color, selected_piece.symbol)
             else:
                 selected_piece = None
 
@@ -117,14 +123,14 @@ while True:
 
     # update the moves of all pieces
     # TODO: also perform check and checkmate detection here
-    # TODO: this currently runs every frame. perhaps a check to see that it's already been 
-    # initialized for this moveset can help with that
-    for row_idx, row in enumerate(initialized_chessboard):
-        for col_idx in range(len(row)):
-            piece = initialized_chessboard[row_idx][col_idx]
-            if piece is not None:
-                #this is printing pieces as expected
-                piece.compute_valid_moves()
+    if recompute_moves is True:
+        for row_idx, row in enumerate(initialized_chessboard):
+            for col_idx in range(len(row)):
+                piece = initialized_chessboard[row_idx][col_idx]
+                if piece is not None:
+                    #this is printing pieces as expected
+                    piece.compute_valid_moves()
+        recompute_moves = False
 
 
     
