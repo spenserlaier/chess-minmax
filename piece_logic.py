@@ -73,6 +73,7 @@ class Pawn(Piece):
     def __init__(self, x, y, board, color):
         super().__init__(x, y, board, color)
         self.symbol = u"♟︎"
+        self.value = 1
 
     def compute_valid_moves(self):
         row, col = self.row, self.col
@@ -132,6 +133,7 @@ class Rook(Piece):
     def __init__(self, x, y, board, color):
         super().__init__(x, y, board, color)
         self.symbol = u"♜"
+        self.value = 5
 
     def compute_valid_moves(self):
         self.available_moves =  test_generic_directions(self, ["left", "right", "up", "down"])
@@ -140,6 +142,7 @@ class Knight(Piece):
     def __init__(self, x, y, board, color):
         super().__init__(x, y, board, color)
         self.symbol = u"♞"
+        self.value = 3
 
     def compute_valid_moves(self ):
         steep_up_right = (self.row-2, self.col+1)
@@ -165,6 +168,7 @@ class Bishop(Piece):
     def __init__(self, x, y, board, color):
         super().__init__(x, y, board, color)
         self.symbol = u"♝"
+        self.value = 3
 
     def compute_valid_moves(self ):
         self.available_moves =  test_generic_directions(self, ["up-left","up-right", "down-left", "down-right"])
@@ -173,6 +177,7 @@ class Queen(Piece):
     def __init__(self, x, y, board, color):
         super().__init__(x, y, board, color)
         self.symbol = u"♛"
+        self.value = 9
 
     def compute_valid_moves(self ):
         self.available_moves = test_generic_directions(self, ["up", "down", "left", "right",  "up-left","up-right", "down-left", "down-right"])
@@ -182,6 +187,8 @@ class King(Piece):
     def __init__(self, x, y, board, color):
         super().__init__(x, y, board, color)
         self.symbol = u"♚"
+        self.value = 50 #TODO: technically it should be of infinite value, but that would interfere with 
+                        # the ai's computations. does the specific value matter?
     def compute_valid_moves(self ):
         self.available_moves = test_generic_directions(self, ["up","left","down","right","up-left","up-right","down-left","down-right" ]
                                        ,num_iterations=1)
