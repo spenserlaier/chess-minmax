@@ -100,7 +100,7 @@ while True:
                 screen.blit(text_surface, text_rect)
 
     if selected_piece is not None:
-        print(selected_piece.available_moves)
+        #print(selected_piece.available_moves)
         mouse_x, mouse_y = pygame.mouse.get_pos()
         piece_symbol = selected_piece.symbol
         piece_color = colors.get_rgb_piece_color(selected_piece)
@@ -120,6 +120,7 @@ while True:
         for col_idx in range(len(row)):
             piece = initialized_chessboard[row_idx][col_idx]
             if piece is not None:
+                #this is printing pieces as expected
                 piece.compute_valid_moves()
 
 

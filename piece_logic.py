@@ -3,14 +3,20 @@ def test_generic_directions(piece, directions, num_iterations=None):
         test_row = piece.row
         test_col = piece.col
         curr_iterations = 0
+        #print(piece.board)
         while (0 <= test_row < len(piece.board) 
                and 0 <= test_col < len(piece.board)):
+            #print(f"testing piece: {piece}, at row {test_row}, and col {test_col}")
             if piece.board[test_row][test_col] is None:
                 moves.add((test_row, test_col))
             elif piece.board[test_row][test_col].color != piece.color:
                 moves.add((test_row, test_col))
                 break
-            else:
+            elif piece.row != test_row or piece.col != test_col:
+                #print('breaking early; encontered same color')
+                #TODO: this is the only branch being taken. why?
+                #answer: the piece has been detecting itself and executing the break
+                # on the first check
                 break
             test_row += row_diff
             test_col += col_diff
