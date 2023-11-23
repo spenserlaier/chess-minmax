@@ -1,23 +1,22 @@
-import colors
-
-
-def get_rgb_piece_color(piece):
-    if piece.color == "black":
-        return colors.black
-    return colors.white
 
 
 class Piece:
 
-    def __init__(self, x, y, board, color):
-        self.x = x
-        self.y = y
+    def __init__(self, row, col, board, color):
+        self.row = row
+        self.col = col
         # self.symbol = "placeholder"
         self.board = board
         self.color = color
 
-    def check_valid_move(next_x, next_y):
+    def check_valid_move(self, next_x, next_y):
         return True
+
+    def move_self(self, row, col):
+        self.board[self.row][self.col] = None
+        self.row = row
+        self.col = col
+        self.board[row][col] = self
 
 
 class Pawn(Piece):

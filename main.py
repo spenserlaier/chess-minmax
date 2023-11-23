@@ -53,29 +53,23 @@ while True:
             # Get mouse position when clicked
             mouse_x, mouse_y = pygame.mouse.get_pos()
             # Print the coordinates
-            print(f"Mouse clicked at ({mouse_x}, {mouse_y})")
+            #print(f"Mouse clicked at ({mouse_x}, {mouse_y})")
             grid_pos_clicked = utilities.detect_square_clicked(chessboard_pixels,
                                                                SQUARE_SIZE,
                                                                mouse_x,
                                                                mouse_y)
-            print(grid_pos_clicked)
+            #print(grid_pos_clicked)
             #icon_rect.center = (cursor_x, cursor_y)
             # Blit icon onto the screen at the updated position
             #screen.blit(icon, icon_rect.topleft)
             if grid_pos_clicked is not None:
                 row, col = grid_pos_clicked
                 piece = initialized_chessboard[row][col]
-                if piece is not None:
-                    selected_piece = piece
-                    #print(piece)
-                    #piece_symbol = piece.symbol
-                    #piece_color = colors.get_rgb_piece_color(piece)
-                    #scaled_symbol = scale_symbol(piece_symbol, piece_color)
-                    #text_rect = pygame.Rect(mouse_x, mouse_y, SQUARE_SIZE, SQUARE_SIZE)
-                    #screen.blit(scaled_symbol, text_rect)
-                    #pygame.display.flip()
-                else:
+                if selected_piece is not None:
+                    selected_piece.move_self(row, col)
                     selected_piece = None
+                elif piece is not None:
+                    selected_piece = piece
             else:
                 selected_piece = None
 
@@ -106,7 +100,7 @@ while True:
 
     if selected_piece is not None:
         mouse_x, mouse_y = pygame.mouse.get_pos()
-        piece_symbol = piece.symbol
+        piece_symbol = selected_piece.symbol
         piece_color = colors.get_rgb_piece_color(piece)
         scaled_symbol = scale_symbol(piece_symbol, piece_color)
         text_rect = pygame.Rect(mouse_x, mouse_y, SQUARE_SIZE, SQUARE_SIZE)
