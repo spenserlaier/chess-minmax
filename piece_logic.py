@@ -13,10 +13,7 @@ def test_generic_directions(piece, directions, num_iterations=None):
                 moves.add((test_row, test_col))
                 break
             elif piece.row != test_row or piece.col != test_col:
-                #print('breaking early; encontered same color')
-                #TODO: this is the only branch being taken. why?
-                #answer: the piece has been detecting itself and executing the break
-                # on the first check
+                # the piece is the same color, and it's not our own coordinates
                 break
             test_row += row_diff
             test_col += col_diff
@@ -184,10 +181,7 @@ class Queen(Piece):
 class King(Piece):
     def __init__(self, x, y, board, color):
         super().__init__(x, y, board, color)
-        #if self.color == "black":
         self.symbol = u"♚"
-        #else:
-            #self.symbol = u"♔"
     def compute_valid_moves(self ):
         self.available_moves = test_generic_directions(self, ["up","left","down","right","up-left","up-right","down-left","down-right" ]
                                        ,num_iterations=1)

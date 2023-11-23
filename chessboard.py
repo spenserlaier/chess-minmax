@@ -50,3 +50,49 @@ def initialize_starting_board(chessboard):
             new_row.append(piece)
         chessboard[r_idx] = new_row
     return chessboard
+
+
+def detect_check(chessboard, king):
+    king_color = king.color
+    for row in chessboard:
+        for piece in row:
+            if piece.available_moves.contains((king.x, king.y)) and piece.color != king_color:
+                # we may not need to check color, because the king shouldn't be in the same colored
+                # pieces available moves anyway
+                return True
+    return False
+
+def simulate_moves_and_detect_check(board, piece_row, piece_col):
+    piece = board[piece_row][piece_col]
+    checkmate = True
+    for row, col in piece.available_moves:
+        piece.move_self(row, col)
+        if detect_check(piece.board) == False:
+            checkmate = False
+        piece.move_self(piece_row, piece_col) #move the piece back to its original state
+    return checkmate
+
+
+def detect_checkmate(chessboard, king):
+    # traverse one layer of moves from the pieces with the same color of
+    # the checked king. if we run check detection for each of these moves
+    # and none of them returns a non-checked state, then we have checkmate
+    for row in chessboard:
+        for piece in row:
+            if simulate_moves_and_detect_check(chessboard, piece) is False:
+                return False
+    return True
+            
+            
+
+
+
+
+
+
+
+
+
+
+
+            
