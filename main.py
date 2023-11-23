@@ -66,7 +66,7 @@ while True:
                              (coord_x, coord_y, SQUARE_SIZE, SQUARE_SIZE))
             curr_piece = initialized_chessboard[r_idx][c_idx]
             if curr_piece is not None:
-                piece_color = colors.white if curr_piece.color == "black" else colors.brown
+                piece_color = colors.black if curr_piece.color == "black" else colors.white
                 #text_surface = FONT.render(curr_piece.symbol, True, colors.black)
                 text_surface = FONT.render(curr_piece.symbol, True, piece_color)
                 # Blit the text surface onto the screen at the specified rectangle

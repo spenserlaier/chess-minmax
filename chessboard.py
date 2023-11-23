@@ -27,7 +27,6 @@ def initialize_starting_board(chessboard):
     for r_idx, row in enumerate(chessboard):
         new_row = []
         for c_idx in range(len(row)):
-            print(row)
             piece = None
             if r_idx == 1:  # black pawn
                 piece = piece_logic.Pawn(r_idx, c_idx, chessboard, "black")
@@ -51,5 +50,4 @@ def initialize_starting_board(chessboard):
             chessboard[r_idx][c_idx] = piece
             new_row.append(piece)
         chessboard[r_idx] = new_row
-    print("count: ", cnt)
     return chessboard
