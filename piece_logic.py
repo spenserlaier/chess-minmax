@@ -60,6 +60,7 @@ class Piece:
         self.color = color
         self.available_moves = set()
         self.moves_made = 0
+        self.checks_king = False
 
     def compute_valid_moves(self):
         # TODO: compute_valid_moves should probably integrate the check-detecting logic itself.
@@ -139,11 +140,14 @@ class Pawn(Piece):
                 ):
 
                     self.available_moves.add((self.row-1, self.col+1))
+        checks_king = False
         for row, col in self.available_moves.copy():
             piece = self.board[row][col]
             if piece is not None:
                 if piece.symbol == "♚" and piece.color != self.color:
                     self.available_moves.remove((row, col))
+                    checks_king = True
+        self.checks_king = checks_king
 
 
 class Rook(Piece):
@@ -155,11 +159,14 @@ class Rook(Piece):
     def compute_valid_moves(self):
         self.available_moves = set()
         self.available_moves =  test_generic_directions(self, ["left", "right", "up", "down"])
+        checks_king = False
         for row, col in self.available_moves.copy():
             piece = self.board[row][col]
             if piece is not None:
                 if piece.symbol == "♚" and piece.color != self.color:
                     self.available_moves.remove((row, col))
+                    checks_king = True
+        self.checks_king = checks_king
 
 class Knight(Piece):
     def __init__(self, x, y, board, color):
@@ -187,11 +194,14 @@ class Knight(Piece):
             if 0 <= row < len(self.board) and 0 <= col < len(self.board):
                 if self.board[row][col] is None or self.board[row][col].color != self.color:
                     self.available_moves.add((row, col))
+        checks_king = False
         for row, col in self.available_moves.copy():
             piece = self.board[row][col]
             if piece is not None:
                 if piece.symbol == "♚" and piece.color != self.color:
                     self.available_moves.remove((row, col))
+                    checks_king = True
+        self.checks_king = checks_king
 
 class Bishop(Piece):
     def __init__(self, x, y, board, color):
@@ -202,11 +212,14 @@ class Bishop(Piece):
     def compute_valid_moves(self):
         self.available_moves = set()
         self.available_moves =  test_generic_directions(self, ["up-left","up-right", "down-left", "down-right"])
+        checks_king = False
         for row, col in self.available_moves.copy():
             piece = self.board[row][col]
             if piece is not None:
                 if piece.symbol == "♚" and piece.color != self.color:
                     self.available_moves.remove((row, col))
+                    checks_king = True
+        self.checks_king = checks_king
 
 class Queen(Piece):
     def __init__(self, x, y, board, color):
@@ -217,11 +230,14 @@ class Queen(Piece):
     def compute_valid_moves(self):
         self.available_moves = set()
         self.available_moves = test_generic_directions(self, ["up", "down", "left", "right",  "up-left","up-right", "down-left", "down-right"])
+        checks_king = False
         for row, col in self.available_moves.copy():
             piece = self.board[row][col]
             if piece is not None:
                 if piece.symbol == "♚" and piece.color != self.color:
                     self.available_moves.remove((row, col))
+                    checks_king = True
+        self.checks_king = checks_king
 
 
 class King(Piece):
@@ -235,9 +251,12 @@ class King(Piece):
         self.available_moves = test_generic_directions(self,
                                                        ["up","left","down","right","up-left","up-right","down-left","down-right" ],
                                                        num_iterations=2) # TODO: king is somehow able to move more than one space even with limits to num_iterations
+        checks_king = False
         for row, col in self.available_moves.copy():
             piece = self.board[row][col]
             if piece is not None:
                 if piece.symbol == "♚" and piece.color != self.color:
                     self.available_moves.remove((row, col))
+                    checks_king = True
+        self.checks_king = checks_king
 

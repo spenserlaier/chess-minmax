@@ -58,12 +58,16 @@ def detect_check(chessboard, king):
         for piece in row:
             #if piece.available_moves.contains((king.x, king.y)) and piece.color != king_color:
             if piece is not None and piece != king:
-                if (king.row, king.col) in piece.available_moves and piece.color != king_color:
+                piece.compute_valid_moves()
+                if piece.checks_king:
+                    print(f"check detected: {king.color} {king.symbol} threatened by {piece.color} {piece.symbol}")
+                    return True
+
+                #if (king.row, king.col) in piece.available_moves and piece.color != king_color:
                     # we may not need to check color, because the king shouldn't be in the same colored
                     # pieces available moves anyway
-                    print(f"check detected: {king.color} {king.symbol} threatened by {piece.color} {piece.symbol}")
-
-                    return True
+                    #print(f"check detected: {king.color} {king.symbol} threatened by {piece.color} {piece.symbol}")
+                    #return True
     return False
 
 def prune_moves_for_checked_team(board, piece_row, piece_col, king):

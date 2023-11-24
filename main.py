@@ -167,9 +167,9 @@ while game_over is False:
                     #this is printing pieces as expected
                     piece.compute_valid_moves()
         kings = chessboard.get_kings(initialized_chessboard)
-        print(kings)
+        #print(kings)
         for king in kings:
-            print(king)
+            #print(king)
             if chessboard.detect_check(initialized_chessboard, king):
                 print(f"check detected: {king.color} king")
                 if chessboard.detect_checkmate(initialized_chessboard, king):
