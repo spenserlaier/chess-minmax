@@ -133,11 +133,16 @@ while game_over is False:
                 if piece is not None:
                     pieces.append(piece)
         #result = minmax_algo.minimax(initialized_chessboard, 0, 3, True)
-        result = minmax_algo.minimax(initialized_chessboard, 0, 3, True)
+        result = minmax_algo.minimax(initialized_chessboard, 0, 1, True)
+        #print(initialized_chessboard)
         if result is not None:
             start, end = result
-            initialized_chessboard[start[0]][start[1]].move_self(end[0], end[1])
-            current_team_color = "white"
+            if initialized_chessboard[start[0]][start[1]] is not None:
+                initialized_chessboard[start[0]][start[1]].move_self(end[0], end[1])
+                current_team_color = "white"
+            else:
+                print(f"no valid coordinates at {start[0]} {start[1]}")
+                current_team_color = "white"
         else:
             print("white wins")
             exit(0)
@@ -166,6 +171,16 @@ while game_over is False:
                     game_over = True
                     winner = "black" if king.color == "white" else "white"
                     print(f"winner is {winner}")
+                    print("board state: ")
+                    for row in initialized_chessboard:
+                        printable_row = []
+                        for piece in row:
+                            if piece is not None:
+                                printable_row.append(piece.symbol + piece.color)
+                            else:
+                                printable_row.append(None)
+                        print(printable_row)
+
 
 
         recompute_moves = False
