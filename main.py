@@ -127,13 +127,17 @@ while game_over is False:
         #((piece_row, piece_col), (move_row, move_col)) = minmax_algo.minimax(initialized_chessboard, 0, 3, True)
 
         #initialized_chessboard[piece_row][piece_col].move_self(move_row, move_col)
+        pieces = list()
+        for row in initialized_chessboard:
+            for col in row:
+                if piece is not None:
+                    pieces.append(piece)
+        #result = minmax_algo.minimax(initialized_chessboard, 0, 3, True)
         result = minmax_algo.minimax(initialized_chessboard, 0, 3, True)
-        #print(result)
-        #exit(0)
         if result is not None:
             start, end = result
             initialized_chessboard[start[0]][start[1]].move_self(end[0], end[1])
-
+            current_team_color = "white"
         else:
             print("white wins")
             exit(0)

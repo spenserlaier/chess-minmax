@@ -61,6 +61,7 @@ class Piece:
     def compute_valid_moves(self):
         # TODO: compute_valid_moves should probably integrate the check-detecting logic itself.
         # whenever we check for a valid move, make sure it doesn't place our own king in check,
+        # TODO: compute_valid_moves should ignore moves which explicitly capture the enemy's king
         # and ignore all moves that do
         # also, prune moves that do not move our team from a checked state to non-checked
         return True
