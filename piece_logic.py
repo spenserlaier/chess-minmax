@@ -153,6 +153,7 @@ class Rook(Piece):
         self.value = 5
 
     def compute_valid_moves(self):
+        self.available_moves = set()
         self.available_moves =  test_generic_directions(self, ["left", "right", "up", "down"])
         for row, col in self.available_moves.copy():
             piece = self.board[row][col]
@@ -166,7 +167,8 @@ class Knight(Piece):
         self.symbol = u"♞"
         self.value = 3
 
-    def compute_valid_moves(self ):
+    def compute_valid_moves(self):
+        self.available_moves = set()
         steep_up_right = (self.row-2, self.col+1)
         flat_up_right= (self.row-1, self.col+2)
 
@@ -197,7 +199,8 @@ class Bishop(Piece):
         self.symbol = u"♝"
         self.value = 3
 
-    def compute_valid_moves(self ):
+    def compute_valid_moves(self):
+        self.available_moves = set()
         self.available_moves =  test_generic_directions(self, ["up-left","up-right", "down-left", "down-right"])
         for row, col in self.available_moves.copy():
             piece = self.board[row][col]
@@ -211,7 +214,8 @@ class Queen(Piece):
         self.symbol = u"♛"
         self.value = 9
 
-    def compute_valid_moves(self ):
+    def compute_valid_moves(self):
+        self.available_moves = set()
         self.available_moves = test_generic_directions(self, ["up", "down", "left", "right",  "up-left","up-right", "down-left", "down-right"])
         for row, col in self.available_moves.copy():
             piece = self.board[row][col]
@@ -227,8 +231,10 @@ class King(Piece):
         self.value = 50 #TODO: technically it should be of infinite value, but that would interfere with 
                         # the ai's computations. does the specific value matter?
     def compute_valid_moves(self ):
+        self.available_moves = set()
         self.available_moves = test_generic_directions(self, ["up","left","down","right","up-left","up-right","down-left","down-right" ]
-                                       ,num_iterations=1)
+                                       ,num_iterations=0)
+        # TODO: king is somehow able to move more than one space even with limits to num_iterations
         for row, col in self.available_moves.copy():
             piece = self.board[row][col]
             if piece is not None:

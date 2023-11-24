@@ -133,7 +133,7 @@ while game_over is False:
                 if piece is not None:
                     pieces.append(piece)
         #result = minmax_algo.minimax(initialized_chessboard, 0, 3, True)
-        result = minmax_algo.minimax(initialized_chessboard, 0, 1, True)
+        result = minmax_algo.minimax(initialized_chessboard, 0, 2, True)
         #print(initialized_chessboard)
         if result is not None:
             #TODO: result has a value of none at times where it shouldn't.
@@ -167,7 +167,9 @@ while game_over is False:
                     #this is printing pieces as expected
                     piece.compute_valid_moves()
         kings = chessboard.get_kings(initialized_chessboard)
+        print(kings)
         for king in kings:
+            print(king)
             if chessboard.detect_check(initialized_chessboard, king):
                 print(f"check detected: {king.color} king")
                 if chessboard.detect_checkmate(initialized_chessboard, king):
