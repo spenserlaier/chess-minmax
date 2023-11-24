@@ -136,6 +136,8 @@ while game_over is False:
         result = minmax_algo.minimax(initialized_chessboard, 0, 1, True)
         #print(initialized_chessboard)
         if result is not None:
+            #TODO: result has a value of none at times where it shouldn't.
+            #need to figure out why
             start, end = result
             if initialized_chessboard[start[0]][start[1]] is not None:
                 initialized_chessboard[start[0]][start[1]].move_self(end[0], end[1])
@@ -167,6 +169,7 @@ while game_over is False:
         kings = chessboard.get_kings(initialized_chessboard)
         for king in kings:
             if chessboard.detect_check(initialized_chessboard, king):
+                print(f"check detected: {king.color} king")
                 if chessboard.detect_checkmate(initialized_chessboard, king):
                     game_over = True
                     winner = "black" if king.color == "white" else "white"
@@ -176,13 +179,10 @@ while game_over is False:
                         printable_row = []
                         for piece in row:
                             if piece is not None:
-                                printable_row.append(piece.symbol + piece.color)
+                                printable_row.append(piece.symbol + piece.color[0])
                             else:
                                 printable_row.append(None)
                         print(printable_row)
-
-
-
         recompute_moves = False
 
 

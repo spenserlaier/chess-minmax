@@ -1,3 +1,6 @@
+import chessboard
+
+
 def test_generic_directions(piece, directions, num_iterations=None):
     def generic_test(piece, row_diff, col_diff, moves, num_iterations=None):
         test_row = piece.row
@@ -110,6 +113,7 @@ class Pawn(Piece):
                 ):
 
                     self.available_moves.add((self.row+1, self.col+1))
+
         elif self.color == 'white':
             # check that we can move up one space
             if self.row - 1 >= 0:
@@ -135,6 +139,12 @@ class Pawn(Piece):
                 ):
 
                     self.available_moves.add((self.row-1, self.col+1))
+        for row, col in self.available_moves.copy():
+            piece = self.board[row][col]
+            if piece is not None:
+                if piece.symbol == "♚" and piece.color != self.color:
+                    self.available_moves.remove((row, col))
+
 
 class Rook(Piece):
     def __init__(self, x, y, board, color):
@@ -144,6 +154,11 @@ class Rook(Piece):
 
     def compute_valid_moves(self):
         self.available_moves =  test_generic_directions(self, ["left", "right", "up", "down"])
+        for row, col in self.available_moves.copy():
+            piece = self.board[row][col]
+            if piece is not None:
+                if piece.symbol == "♚" and piece.color != self.color:
+                    self.available_moves.remove((row, col))
 
 class Knight(Piece):
     def __init__(self, x, y, board, color):
@@ -170,6 +185,11 @@ class Knight(Piece):
             if 0 <= row < len(self.board) and 0 <= col < len(self.board):
                 if self.board[row][col] is None or self.board[row][col].color != self.color:
                     self.available_moves.add((row, col))
+        for row, col in self.available_moves.copy():
+            piece = self.board[row][col]
+            if piece is not None:
+                if piece.symbol == "♚" and piece.color != self.color:
+                    self.available_moves.remove((row, col))
 
 class Bishop(Piece):
     def __init__(self, x, y, board, color):
@@ -179,6 +199,11 @@ class Bishop(Piece):
 
     def compute_valid_moves(self ):
         self.available_moves =  test_generic_directions(self, ["up-left","up-right", "down-left", "down-right"])
+        for row, col in self.available_moves.copy():
+            piece = self.board[row][col]
+            if piece is not None:
+                if piece.symbol == "♚" and piece.color != self.color:
+                    self.available_moves.remove((row, col))
 
 class Queen(Piece):
     def __init__(self, x, y, board, color):
@@ -188,6 +213,11 @@ class Queen(Piece):
 
     def compute_valid_moves(self ):
         self.available_moves = test_generic_directions(self, ["up", "down", "left", "right",  "up-left","up-right", "down-left", "down-right"])
+        for row, col in self.available_moves.copy():
+            piece = self.board[row][col]
+            if piece is not None:
+                if piece.symbol == "♚" and piece.color != self.color:
+                    self.available_moves.remove((row, col))
 
 
 class King(Piece):
@@ -199,4 +229,9 @@ class King(Piece):
     def compute_valid_moves(self ):
         self.available_moves = test_generic_directions(self, ["up","left","down","right","up-left","up-right","down-left","down-right" ]
                                        ,num_iterations=1)
+        for row, col in self.available_moves.copy():
+            piece = self.board[row][col]
+            if piece is not None:
+                if piece.symbol == "♚" and piece.color != self.color:
+                    self.available_moves.remove((row, col))
 
