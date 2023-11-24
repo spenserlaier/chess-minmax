@@ -10,7 +10,7 @@ def test_generic_directions(piece, directions, num_iterations=None):
         while (0 <= test_row < len(piece.board) 
                and 0 <= test_col < len(piece.board)):
             #print(f"testing piece: {piece}, at row {test_row}, and col {test_col}")
-            if piece.board[test_row][test_col] is None:
+            if piece.board[test_row][test_col] == None:
                 moves.add((test_row, test_col))
             elif piece.board[test_row][test_col].color != piece.color:
                 moves.add((test_row, test_col))
@@ -21,26 +21,26 @@ def test_generic_directions(piece, directions, num_iterations=None):
             test_row += row_diff
             test_col += col_diff
             curr_iterations += 1
-            if num_iterations is not None and curr_iterations == num_iterations:
+            if num_iterations != None and curr_iterations >= num_iterations:
                 break
         return moves
     final_moves = set()
     if "up" in directions:
-        final_moves = generic_test(piece, row_diff=-1, col_diff=0, moves=final_moves)
+        final_moves = generic_test(piece, row_diff=-1, col_diff=0, moves=final_moves, num_iterations=num_iterations)
     if "down" in directions:
-        final_moves = generic_test(piece, row_diff=+1, col_diff=0, moves=final_moves)
+        final_moves = generic_test(piece, row_diff=+1, col_diff=0, moves=final_moves, num_iterations=num_iterations)
     if "left" in directions:
-        final_moves = generic_test(piece, row_diff=0, col_diff=-1, moves=final_moves)
+        final_moves = generic_test(piece, row_diff=0, col_diff=-1, moves=final_moves, num_iterations=num_iterations)
     if "right" in directions:
-        final_moves = generic_test(piece, row_diff=0, col_diff=1, moves=final_moves)
+        final_moves = generic_test(piece, row_diff=0, col_diff=1, moves=final_moves, num_iterations=num_iterations)
     if "up-right" in directions:
-        final_moves = generic_test(piece, row_diff=-1, col_diff=1, moves=final_moves)
+        final_moves = generic_test(piece, row_diff=-1, col_diff=1, moves=final_moves, num_iterations=num_iterations)
     if "down-right" in directions:
-        final_moves = generic_test(piece, row_diff=1, col_diff=1, moves=final_moves)
+        final_moves = generic_test(piece, row_diff=1, col_diff=1, moves=final_moves, num_iterations=num_iterations)
     if "up-left" in directions:
-        final_moves = generic_test(piece, row_diff=-1, col_diff=-1, moves=final_moves)
+        final_moves = generic_test(piece, row_diff=-1, col_diff=-1, moves=final_moves, num_iterations=num_iterations)
     if "down-left" in directions:
-        final_moves = generic_test(piece, row_diff=+1, col_diff=-1, moves=final_moves)
+        final_moves = generic_test(piece, row_diff=+1, col_diff=-1, moves=final_moves, num_iterations=num_iterations)
     return final_moves
 
         
@@ -230,11 +230,11 @@ class King(Piece):
         self.symbol = u"♚"
         self.value = 50 #TODO: technically it should be of infinite value, but that would interfere with 
                         # the ai's computations. does the specific value matter?
-    def compute_valid_moves(self ):
+    def compute_valid_moves(self):
         self.available_moves = set()
-        self.available_moves = test_generic_directions(self, ["up","left","down","right","up-left","up-right","down-left","down-right" ]
-                                       ,num_iterations=0)
-        # TODO: king is somehow able to move more than one space even with limits to num_iterations
+        self.available_moves = test_generic_directions(self,
+                                                       ["up","left","down","right","up-left","up-right","down-left","down-right" ],
+                                                       num_iterations=2) # TODO: king is somehow able to move more than one space even with limits to num_iterations
         for row, col in self.available_moves.copy():
             piece = self.board[row][col]
             if piece is not None:
