@@ -3,6 +3,7 @@ import sys
 import chessboard
 import colors
 import utilities
+import minmax_algo
 
 # Initialize Pygame
 pygame.init()
@@ -19,6 +20,8 @@ BOARD_STARTING_X = 20
 BOARD_STARTING_Y = 20
 
 FONT = pygame.font.Font("fonts/arial_unicode.ttf", SQUARE_SIZE)
+
+USE_AI = True
 
 
 
@@ -77,7 +80,12 @@ while game_over is False:
                         current_team_color = "white" if current_team_color == "black" else "black"
                     selected_piece = None
                 elif piece is not None and piece.color == current_team_color:
-                    selected_piece = piece
+                    if USE_AI is True:
+                        if piece.color == "white":
+                            selected_piece = piece
+
+                    else:
+                        selected_piece = piece
                     #print(selected_piece.available_moves, selected_piece.color, selected_piece.symbol)
             else:
                 selected_piece = None
@@ -115,6 +123,24 @@ while game_over is False:
         screen.blit(scaled_symbol, text_rect)
         pygame.display.flip()
 
+    if USE_AI is True and  current_team_color == "black":
+        #((piece_row, piece_col), (move_row, move_col)) = minmax_algo.minimax(initialized_chessboard, 0, 3, True)
+
+        #initialized_chessboard[piece_row][piece_col].move_self(move_row, move_col)
+        result = minmax_algo.minimax(initialized_chessboard, 0, 3, True)
+        #print(result)
+        #exit(0)
+        if result is not None:
+            start, end = result
+            initialized_chessboard[start[0]][start[1]].move_self(end[0], end[1])
+
+        else:
+            print("white wins")
+            exit(0)
+        
+        recompute_moves = True
+
+
     pygame.display.flip()
 
     # Control frame rate (optional)
@@ -136,6 +162,8 @@ while game_over is False:
                     game_over = True
                     winner = "black" if king.color == "white" else "white"
                     print(f"winner is {winner}")
+
+
         recompute_moves = False
 
 
